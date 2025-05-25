@@ -1,0 +1,4 @@
+apiVersion: v2
+name: common
+description: Common resources for movie-ticket-booking
+version: 0.1.0

@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-service
+  namespace: movie-ticket-booking
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: movie-service
+  template:
+    metadata:
+      labels:
+        app: movie-service
+    spec:
+      containers:
+        - name: movie-service
+          image: <account-id>.dkr.ecr.us-east-1.amazonaws.com/movie-service:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_MOVIE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              value: admin
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: postgres-movie-password
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: KAFKA_BOOTSTRAP_SERVERS
+            - name: SPRING_KAFKA_PROPERTIES_SECURITY_PROTOCOL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: SPRING_KAFKA_PROPERTIES_SECURITY_PROTOCOL
+            - name: EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: EUREKA_HOST
+            - name: JASYPT_ENCRYPTOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: jasypt-encryptor-password
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movie-service
+  namespace: movie-ticket-booking
+spec:
+  selector:
+    app: movie-service
+  ports:
+    - port: 8082
+      targetPort: 8082
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: movie-service-hpa
+  namespace: movie-ticket-booking
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: movie-service
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

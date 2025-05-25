@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: {{ .Values.namespace }}
+data:
+  POSTGRES_USER_URL: {{ .Values.config.postgresUserUrl }}
+  POSTGRES_MOVIE_URL: {{ .Values.config.postgresMovieUrl }}
+  POSTGRES_THEATRE_URL: {{ .Values.config.postgresTheatreUrl }}
+  POSTGRES_BOOKING_URL: {{ .Values.config.postgresBookingUrl }}
+  POSTGRES_SUBSCRIPTION_URL: {{ .Values.config.postgresSubscriptionUrl }}
+  POSTGRES_AD_URL: {{ .Values.config.postgresAdUrl }}
+  KAFKA_BOOTSTRAP_SERVERS: {{ .Values.config.kafkaBootstrapServers }}
+  REDIS_HOST: {{ .Values.config.redisHost }}
+  EUREKA_HOST: {{ .Values.config.eurekaHost }}
+  SPRING_KAFKA_PROPERTIES_SECURITY_PROTOCOL: {{ .Values.config.kafkaSecurityProtocol }}

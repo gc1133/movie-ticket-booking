@@ -1,0 +1,23 @@
+namespace: movie-ticket-booking
+secrets:
+  postgresUserPassword: secure-password
+  postgresMoviePassword: secure-password
+  postgresTheatrePassword: secure-password
+  postgresBookingPassword: secure-password
+  postgresSubscriptionPassword: secure-password
+  postgresAdPassword: secure-password
+  stripeApiKey: sk-secure-key
+  paytmMerchantId: secure-merchant-id
+  jasyptEncryptorPassword: secure-encryption-key
+  keycloakPassword: secure-keycloak
+config:
+  postgresUserUrl: jdbc:postgresql://userdb.<region>.rds.amazonaws.com:5432/userdb
+  postgresMovieUrl: jdbc:postgresql://moviedb.<region>.rds.amazonaws.com:5432/moviedb
+  postgresTheatreUrl: jdbc:postgresql://theatredb.<region>.rds.amazonaws.com:5432/theatredb
+  postgresBookingUrl: jdbc:postgresql://bookingdb.<region>.rds.amazonaws.com:5432/bookingdb
+  postgresSubscriptionUrl: jdbc:postgresql://subscriptiondb.<region>.rds.amazonaws.com:5432/subscriptiondb
+  postgresAdUrl: jdbc:postgresql://addb.<region>.rds.amazonaws.com:5432/addb
+  kafkaBootstrapServers: b-1.movie-ticket-booking-kafka.<id>.kafka.<region>.amazonaws.com:9092
+  redisHost: movie-ticket-booking-redis.<id>.cache.amazonaws.com
+  eurekaHost: http://discovery-service:8761/eureka
+  kafkaSecurityProtocol: SSL

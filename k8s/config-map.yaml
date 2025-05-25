@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: movie-ticket-booking
+data:
+  POSTGRES_USER_URL: jdbc:postgresql://userdb.<region>.rds.amazonaws.com:5432/userdb
+  POSTGRES_MOVIE_URL: jdbc:postgresql://moviedb.<region>.rds.amazonaws.com:5432/moviedb
+  POSTGRES_THEATRE_URL: jdbc:postgresql://theatredb.<region>.rds.amazonaws.com:5432/theatredb
+  POSTGRES_BOOKING_URL: jdbc:postgresql://bookingdb.<region>.rds.amazonaws.com:5432/bookingdb
+  POSTGRES_SUBSCRIPTION_URL: jdbc:postgresql://subscriptiondb.<region>.rds.amazonaws.com:5432/subscriptiondb
+  POSTGRES_AD_URL: jdbc:postgresql://addb.<region>.rds.amazonaws.com:5432/addb
+  KAFKA_BOOTSTRAP_SERVERS: b-1.movie-ticket-booking-kafka.<id>.kafka.<region>.amazonaws.com:9092
+  REDIS_HOST: movie-ticket-booking-redis.<id>.cache.amazonaws.com
+  EUREKA_HOST: http://discovery-service:8761/eureka
+  SPRING_KAFKA_PROPERTIES_SECURITY_PROTOCOL: SSL
